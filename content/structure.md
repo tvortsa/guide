@@ -1,24 +1,24 @@
 ---
-title: Application Structure
-description: How to structure your Meteor app with ES2015 modules, ship code to the client and server, and split your code into multiple apps.
+title: Структура приложения
+description: Как структурировать ваше приложение с модулями ES2015, доставкой кода на клиент и на сервер, и разделением кода множественных приложений.
 discourseTopicId: 20187
 ---
 
-After reading this article, you'll know:
+После прочтения этой статьи вы будете знать:
 
-1. How a Meteor application compares to other types of applications in terms of file structure.
-2. How to organize your application both for small and larger applications.
-3. How to format your code and name the parts of your application in consistent and maintainable ways.
+1. Как Meteor приложение соотносится с другими типами приложений в терминах файловой структуры.
+2. Как структурировать ваше приложения для больших и маленьких проектов.
+3. Как форматировать код и именовать части вашего приложения последовательным и поддерживаемым образом.
 
 <h2 id="meteor-structure">Universal JavaScript</h2>
 
-Meteor is a *full-stack* framework for building JavaScript applications. This means Meteor applications differ from most applications in that they include code that runs on the client, inside a web browser or Cordova mobile app, code that runs on the server, inside a [Node.js](http://nodejs.org/) container, and _common_ code that runs in both environments. The [Meteor build tool](build-tool.html) allows you to easily specify what JavaScript code, including any supporting UI templates, CSS rules, and static assets, to run in each environment using a combination of ES2015 `import` and `export` and the Meteor build system [default file load order](#load-order) rules.
+Метеор это *full-stack* фрэймворк для создания JavaScript приложений. Это значит что Meteor приложения отличаются от большинства приложений тем что содержат код который выполняется на клиенте, внутри web браузера или мобильного приложения Cordova, код, запускаемый на сервере, внутри [Node.js](http://nodejs.org/) контейнера, и _common_ код который запускается и там и там. Инструмент [Meteor build tool](build-tool.html) позволяет вам просто указать какой JavaScript код, включая любые поддерживаемые UI шаблоны, CSS правила, и статические активы, запускать в каждом из окружений (клиентском или серверном) используя комбинации ES2015 `import` и `export` и правила системы сборки Meteor [default file load order](#load-order) .
 
-<h3 id="es2015-modules">ES2015 modules</h3>
+<h3 id="es2015-modules">модули ES2015</h3>
 
-As of version 1.3, Meteor ships with full support for [ES2015 modules](https://developer.mozilla.org/en/docs/web/javascript/reference/statements/import). The ES2015 module standard is the replacement for [CommonJS](http://requirejs.org/docs/commonjs.html) and [AMD](https://github.com/amdjs/amdjs-api), which are commonly used JavaScript module format and loading systems.
+С версии 1.3, Meteor поставляется с полной поддержкой [модулей ES2015](https://developer.mozilla.org/en/docs/web/javascript/reference/statements/import). Стандартный модуль ES2015 заменяет [CommonJS](http://requirejs.org/docs/commonjs.html) и [AMD](https://github.com/amdjs/amdjs-api), which are commonly used JavaScript module format and loading systems.
 
-In ES2015, you can make variables available outside a file using the `export` keyword. To use the variables somewhere else, you must `import` them using the path to the source. Files that export some variables are called "modules", because they represent a unit of reusable code. Explicitly importing the modules and packages you use helps you write your code in a modular way, avoiding the introduction of global symbols and "action at a distance".
+В ES2015, вы можете создавать переменные доступные извне файла используя ключевое слово `export` . Чтобы использовать переменные гдето еще, вы должны `import` их используя путь к исходникам. Файлы которые export какие-либо переменные называются "модули", поскольку представляют собой единицу повторно-используемого кода. Explicitly importing the modules and packages you use helps you write your code in a modular way, avoiding the introduction of global symbols and "action at a distance".
 
 Since this is a new feature introduced in Meteor 1.3, you will find a lot of code online that uses the older, more centralized conventions built around packages and apps declaring global symbols. This old system still works, so to opt-in to the new module system code must be placed inside the `imports/` directory in your application. We expect a future release of Meteor will turn on modules by default for all code, because this is more aligned with how developers in the wider JavaScript community write their code.
 
