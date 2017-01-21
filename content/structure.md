@@ -18,50 +18,50 @@ discourseTopicId: 20187
 
 С версии 1.3, Meteor поставляется с полной поддержкой [модулей ES2015](https://developer.mozilla.org/en/docs/web/javascript/reference/statements/import). Стандартный модуль ES2015 заменяет [CommonJS](http://requirejs.org/docs/commonjs.html) и [AMD](https://github.com/amdjs/amdjs-api), which are commonly used JavaScript module format and loading systems.
 
-В ES2015, вы можете создавать переменные доступные извне файла используя ключевое слово `export` . Чтобы использовать переменные гдето еще, вы должны `import` их используя путь к исходникам. Файлы которые export какие-либо переменные называются "модули", поскольку представляют собой единицу повторно-используемого кода. Explicitly importing the modules and packages you use helps you write your code in a modular way, avoiding the introduction of global symbols and "action at a distance".
+В ES2015, вы можете создавать переменные доступные извне файла используя ключевое слово `export` . Чтобы использовать переменные гдето еще, вы должны `import` их используя путь к исходникам. Файлы которые export какие-либо переменные называются "модули", поскольку представляют собой единицу повторно-используемого кода. Явное импортирование модулей и пакетов, которые вы используете поможет вам писать свой код по модульному принципу, что позволяет избежать введения глобальных символов и "действия на расстоянии".
 
-Since this is a new feature introduced in Meteor 1.3, you will find a lot of code online that uses the older, more centralized conventions built around packages and apps declaring global symbols. This old system still works, so to opt-in to the new module system code must be placed inside the `imports/` directory in your application. We expect a future release of Meteor will turn on modules by default for all code, because this is more aligned with how developers in the wider JavaScript community write their code.
+Поскольку это новая фича появившаяся в Meteor 1.3, вы встретите много кода в старом стиле, больше централизованных соглашений вокруг пакетов и приложений объявляющих глобальные symbols. Эта старая система продолжает быть работоспособной, так что чтобы перейти на новую модульную систему код модуля должен быть помещен в папку `imports/` вашего приложения. Мы ожидаем, что будущий выпуск Метеор будет включать все модули по умолчанию для всего кода, потому что это в большей степени совпадает с тем, как разработчики в сообществе JavaScript пишут свой код.
 
-You can read about the module system in detail in the [`modules` package README](https://docs.meteor.com/#/full/modules). This package is automatically included in every new Meteor app as part of the [`ecmascript` meta-package](https://docs.meteor.com/#/full/ecmascript), so most apps won't need to do anything to start using modules right away.
+Подробнее о модульной системе вы можете прочесть в [`modules` package README](https://docs.meteor.com/#/full/modules). Этот пакет автоматически включен в каждое Meteor приложение как часть [`ecmascript` meta-package](https://docs.meteor.com/#/full/ecmascript), поэтому большинству приложений не нужно ничего делать, чтобы начать использовать модули сразу.
 
-<h3 id="intro-to-import-export">Introduction to using `import` and `export`</h3>
+<h3 id="intro-to-import-export">Введение в использование `import` и `export`</h3>
 
-Meteor allows you to `import` not only JavaScript in your application, but also CSS and HTML to control load order:
+Meteor позволяет вам `import` в ваше приложение не только JavaScript, но также CSS и HTML для управления загрузкой:
 
 ```js
-import '../../api/lists/methods.js';  // import from relative path
-import '/imports/startup/client';     // import module with index.js from absolute path
-import './loading.html';              // import Blaze compiled HTML from relative path
-import '/imports/ui/style.css';       // import CSS from absolute path
+import '../../api/lists/methods.js';  // импорт по относительному пути
+import '/imports/startup/client';     // импорт модуля с index.js по абсолютному пути
+import './loading.html';              // импорт Blaze compiled HTML по относительному пути
+import '/imports/ui/style.css';       // импорт CSS по абсолютному пути
 ```
 
-> For more ways to import styles, see the [Build System](build-tool.html#css-importing) article.
+> Больше способов импорта стилей, описано в статье [Build System](build-tool.html#css-importing).
 
-Meteor also supports the standard ES2015 modules `export` syntax:
+Meteor также поддерживает синтаксис стандартнх модулей ES2015 `export` :
 
 ```js
-export const listRenderHold = LaunchScreen.hold();  // named export
-export { Todos };                                   // named export
-export default Lists;                               // default export
-export default new Collection('lists');             // default export
+export const listRenderHold = LaunchScreen.hold();  // именованный экспорт
+export { Todos };                                   // именованный экспорт
+export default Lists;                               // дефолтный экспорт
+export default new Collection('lists');             // дефолтный экспорт
 ```
 
 <h3 id="importing-from-packages">Importing from packages</h3>
 
-In Meteor, it is also simple and straightforward to use the `import` syntax to load npm packages on the client or server and access the package's exported symbols as you would with any other module. You can also import from Meteor Atmosphere packages, but the import path must be prefixed with `meteor/` to avoid conflict with the npm package namespace. For example, to import `moment` from npm and `HTTP` from Atmosphere:
+В Meteor, также просто и straightforward использовать синтаксис `import` для загрузки npm пакетов на клиент или сервер и  access the package's exported symbols as you would with any other module. Вы также можете import из пакетов Meteor Atmosphere , но import должен предваряться `meteor/` для избежания конфликтов с областью имен npm пакета. Например, для импорта `moment` из npm и `HTTP` из Atmosphere:
 
 ```js
-import moment from 'moment';          // default import from npm
-import { HTTP } from 'meteor/http';   // named import from Atmosphere
+import moment from 'moment';          // дефолтный импорт из npm
+import { HTTP } from 'meteor/http';   // именованный импорт из Atmosphere
 ```
 
-For more details using `imports` with packages see [Using Packages](using-packages.html) in the Meteor Guide.
+Подробнее об использовании `imports` в пакетах описано в [Using Packages](using-packages.html) руководства Meteor.
 
-<h3 id="using-require">Using `require`</h3>
+<h3 id="using-require">Использование `require`</h3>
 
-In Meteor, `import` statements compile to CommonJS `require` syntax. However, as a convention we encourage you to use `import`.
+В Meteor, выражение `import` компилируется в синтаксис CommonJS `require`. Тем не менее, в виде соглашения мы рекомендуем использовать синтаксис `import`.
 
-With that said, in some situations you may need to call out to `require` directly. One notable example is when requiring client or server-only code from a common file. As `import`s must be at the top-level scope, you may not place them within an `if` statement, so you'll need to write code like:
+С учетом сказанного, иногда вам может понадобиться `require` напрямую. One notable example is when requiring client or server-only code from a common file. As `import`s must be at the top-level scope, you may not place them within an `if` statement, так что вам нужно будет написать код так:
 
 ```js
 if (Meteor.isClient) {
@@ -69,7 +69,7 @@ if (Meteor.isClient) {
 }
 ```
 
-Note that dynamic calls to `require()` (where the name being required can change at runtime) cannot be analyzed correctly and may result in broken client bundles.
+Заметьте что динамический вызов `require()` (where the name being required может измениться во время выполнения) cannot be analyzed correctly and may result in broken client bundles.
 
 If you need to `require` from an ES2015 module with a `default` export, you can grab the export with `require("package").default`.
 
@@ -88,50 +88,50 @@ When using CoffeeScript, not only the syntax to import variables is different, b
 exports.Lists = ListsCollection 'lists'
 ```
 
-<h2 id="javascript-structure">File structure</h2>
+<h2 id="javascript-structure">Файловая структура</h2>
 
-To fully use the module system and ensure that our code only runs when we ask it to, we recommend that all of your application code should be placed inside the `imports/` directory. This means that the Meteor build system will only bundle and include that file if it is referenced from another file using an `import` (also called "lazy evaluation or loading").
+Для полноценного использования модульной системы и уверенности втом что код запускается только когда мы его запрашиваем мы рекомендуем весь код вашего приложения размещать в папке `imports/`. Это приведет к тому что система сборки приложений Meteor будет включать эти файлы только если они запрашиваются из других файлов с использованием `import` (что также называют "ленивой загрузкой").
 
-Meteor will load all files outside of any directory named `imports/` in the application using the [default file load order](#load-order) rules (also called "eager evaluation or loading"). It is recommended that you create exactly two eagerly loaded files, `client/main.js` and `server/main.js`, in order to define explicit entry points for both the client and the server. Meteor ensures that any file in any directory named `server/` will only be available on the server, and likewise for files in any directory named `client/`. This also precludes trying to `import` a file to be used on the server from any directory named `client/` even if it is nested in an `imports/` directory and vice versa for importing client files from `server/`.
+Meteor будет загружать все файлы вне папки `imports/` в приложение используя [default file load order](#load-order) rules (также называемой "жадной загрузкой"). Рекомендуется чтобы вы создавали только два жадно загружаемых файла, `client/main.js` и `server/main.js`, для того, чтобы определить явные точки входа для клиента и сервера. Meteor гарантирует что любые файлы в любой папке в папке `server/` будут доступны только на сервере, также и для файлов в любой папке папки `client/`. Это также предотвращает попытки `import` файлов которые должны использоваться только на сервере из любой папки с именем `client/` даже если они вложены в папку `imports/` и наоборот для импорта файлов клиента из папки `server/`.
 
-These `main.js` files won't do anything themselves, but they should import some _startup_ modules which will run immediately, on client and server respectively, when the app loads. These modules should do any configuration necessary for the packages you are using in your app, and import the rest of your app's code.
+Эти файлы `main.js` ничего сами не делают, но они должны импортировать какие-то _startup_ модули которые будут работать сразу, на клиенте и сервере соответственно, по загрузке приложения. Эти модули должны выполнять всю необходимую конфигурацию для используемых в приложении пакетов, и импортировать оставшийся код приложения.
 
-<h3 id="example-app-structure">Example directory layout</h3>
+<h3 id="example-app-structure">Пример структуры папок</h3>
 
-To start, let's look at our [Todos example application](https://github.com/meteor/todos), which is a great example to follow when structuring your app. Here's an overview of its directory structure:
+Взгляните на [Todos example application](https://github.com/meteor/todos), прекрасный пример структуры приложения. Вот структура его папок:
 
 ```sh
 imports/
   startup/
     client/
-      index.js                 # import client startup through a single index entry point
-      routes.js                # set up all routes in the app
-      useraccounts-configuration.js # configure login templates
+      index.js                 # импорт клиентского стартап кода через единственную точку входа index
+      routes.js                # настройка всех роутов в приложении
+      useraccounts-configuration.js # конфигурирует login шаблоны
     server/
-      fixtures.js              # fill the DB with example data on startup
-      index.js                 # import server startup through a single index entry point
+      fixtures.js              # заполняет DB демо-данными при старте
+      index.js                 # импорт серверного стартап кода через единственную точку входа index
 
   api/
-    lists/                     # a unit of domain logic
+    lists/                     # элемент логики домена
       server/
-        publications.js        # all list-related publications
+        publications.js        # все list-related публикации
         publications.tests.js  # tests for the list publications
-      lists.js                 # definition of the Lists collection
+      lists.js                 # объявление коллекции Lists
       lists.tests.js           # tests for the behavior of that collection
-      methods.js               # methods related to lists
-      methods.tests.js         # tests for those methods
+      methods.js               # методы относящиеся к lists
+      methods.tests.js         # тесты для этих методов
 
   ui/
-    components/                # all reusable components in the application
-                               # can be split by domain if there are many
-    layouts/                   # wrapper components for behaviour and visuals
-    pages/                     # entry points for rendering used by the router
+    components/                # все повторно-используемые компоненты в приложении
+                               # может быть разбито на домены если их много
+    layouts/                   # обертка компонентов для представления и поведения
+    pages/                     # точки входа для рендеринга используемого роутером
 
 client/
-  main.js                      # client entry point, imports all client code
+  main.js                      # точка входа клиента, импортирует весь клиентский код
 
 server/
-  main.js                      # server entry point, imports all server code
+  main.js                      # точка входа сервера импортирует весь серверный код
 ```
 
 <h3 id="structuring-imports">Structuring imports</h3>
